@@ -1,0 +1,34 @@
+.Header {
+    width: 100%;
+    height: 6.25rem;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.18);
+    background-color:#FFF;
+    padding: auto;
+}
+.Header *{
+    width: 70%;
+    display: inline-block;
+    margin: 32px auto;
+}
+
+.Title {
+    width: 7.063rem;
+    height: 1.75rem;
+    font-family: WorkSans;
+    font-size: 1.5rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: -0.88px;
+    color: #363636;
+}
+
+.searchBar {  
+    width: 26.25rem;
+    height: 2.5rem;
+    opacity: 0.2;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+    background-color: var(--white);
+}

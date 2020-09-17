@@ -1,0 +1,41 @@
+.AlbumList {
+    margin-top: 50px;
+}
+
+.AlbumDetail {
+    width: 70%;
+    height: 80px;
+    box-shadow: 0 1px 3px 0 #e7e7e7;
+    background-color: #FFF;
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+}
+.AlbumDetail *{
+    display: inline-block;
+}
+
+.image {
+    object-fit: contain;
+    height: 100%;
+    border-radius: 5px;
+}
+.imageDiv {
+    position: relative;
+    height: 100%;
+    /* margin: 1rem; */
+}
+
+.basicInfo {
+    position: relative;
+    top: 0;
+    display: inline-block;
+    margin-left: 1rem;
+    height: 100%;
+}
+.title, .artist {
+    display: block;
+}
+.title {
+    /* margin: 5px; */
+}
