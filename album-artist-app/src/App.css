@@ -3,17 +3,8 @@
   /* width: 100%; */
   /* height: 51.438rem; */
   background-color: #f9f9f9;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  font-family: WorkSans, sans-serif;
+  color: #363636;
 }
 
 .App-header {
