@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 function AlbumDetail(props) {
     console.log("AlbumDetail props = ", props);
     
-    const [artistId, setArtistId] = useState(null);
-    
     let favorite = "MARK AS FAVORITE"
     if (props.details.favorite) {
         favorite = "Remove favorite";
@@ -16,8 +14,8 @@ function AlbumDetail(props) {
     let releaseYear = d.getFullYear();
 
     function markFavorite(id) {
-        console.log("Button clicked", id)
-        setArtistId(id);
+        console.log("Button clicked", id);
+        props.markFavorite(props.details);
     }
 
     function filterAlbums(id) {
@@ -33,8 +31,8 @@ function AlbumDetail(props) {
                     <Link exact to={"/artist/" + props.details.artistId} className="grayText" onClick={() => filterAlbums(props.details.artistId)}>{props.artist}</Link>
                 </div>
             </div>
-            <div className="releaseDate"><span className="grayText">Released:</span> {releaseYear}</div>
-            <div className="price">{props.details.price}</div>
+            <div className="releaseDate bold"><span className="grayText normal">Released:</span> <span classname="bold">{releaseYear}</span></div>
+            <div className="price bold">{props.details.price}</div>
             <button onClick={() => markFavorite(props.details.id)} className="favoriteButton">{favorite}</button>
         </div>
     );
