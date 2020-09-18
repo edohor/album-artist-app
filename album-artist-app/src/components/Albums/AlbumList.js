@@ -8,6 +8,7 @@ function AlbumList() {
     
     const [albums, setAlbums] = useState([]);
     const [artists, setArtists] = useState([]);
+    const [filteredArtistId, setFilteredArtistId] = useState(null);
 
     if (fetchAlbums) {
         fetchAlbums = false;
@@ -34,23 +35,43 @@ function AlbumList() {
                 console.log("repos error = ", error);
             })  
     }
+
+    function filterAlbums(artistId) {
+        console.log("[filterAlbums]", artistId);
+        setFilteredArtistId(artistId);
+    }
     
-    console.log("[getAllAlbums] albums = ", albums);
-    console.log("[getAllAlbums] artists = ", artists);
+    // console.log("[getAllAlbums] albums = ", albums);
+    // console.log("[getAllAlbums] artists = ", artists);
 
     let albumDetail = [];
     if (albums.length > 0 && artists.length > 0) {
-        for (let i = 0; i < albums.length; i++) {
-            let artistName = "";
-            for (let j = 0; j < artists.length; j++) {
-                console.log("albums = ", albums[i].artistId);
-                console.log("artists = ", artists[j].id);
-                if (albums[i].artistId===artists[j].id) {
-                    console.log("MATCH", artists[j].title);
-                    artistName = artists[j].title;
+        let artistName = "";
+        let artistId = null;
+        if (filteredArtistId!==null) {
+            for (let i = 0; i < albums.length; i++) {
+                if (albums[i].artistId===filteredArtistId) {
+                    for (let j = 0; j < artists.length; j++) {
+                        if (artists[j].id===filteredArtistId) {
+                            artistName = artists[j].title;
+                        }
+                    }      
+                    artistId = filteredArtistId;
+                    albumDetail.push(<AlbumDetail details={albums[i]} artist={artistName} filterAlbums={() => filterAlbums(artistId)}/>);  
                 }
+
+                console.log("albumDetail = ", albumDetail);
             }
-            albumDetail.push(<AlbumDetail details={albums[i]} artist={artistName}/>);
+        } else {
+            for (let i = 0; i < albums.length; i++) {
+                for (let j = 0; j < artists.length; j++) {
+                    if (albums[i].artistId===artists[j].id) {
+                        artistName = artists[j].title;
+                        artistId = artists[j].id;
+                    }
+                }
+                albumDetail.push(<AlbumDetail details={albums[i]} artist={artistName} filterAlbums={filterAlbums}/>);
+            }
         }
     }
 

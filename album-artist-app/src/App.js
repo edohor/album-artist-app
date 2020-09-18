@@ -10,8 +10,8 @@ function App() {
     <div className="App">
       <Header />
       <Switch>
+        <Route exact path={"/artist/:artistId"} render={({match, history}) => <AlbumList match={match} history={history}/>} />
         <Route exact path={"/"} render={({match, history}) => <AlbumList match={match} history={history}/>}/>
-        <Route exact path={"/artist/:artistId"} render={({match, history}) => <ArtistDetails match={match} history={history}/>} />
       </Switch>
     </div>
   );
