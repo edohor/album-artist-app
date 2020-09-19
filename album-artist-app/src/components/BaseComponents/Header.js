@@ -10,12 +10,18 @@ function Header(props) {
         props.search(search);
     }
 
+    const searchOnEnterPressed = (e) => {
+        if (e.key === 'Enter') {
+            props.search(search);
+        }
+    }
+
     return (
         <div className="Header">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="headerContent">
                 <div className="Title">{props.title}</div>
-                <input type="search" placeholder="Search" className="searchBar" onChange={event => setSearch(event.target.value)}/>
+                <input type="search" placeholder="Search" className="searchBar" onChange={event => setSearch(event.target.value)} onKeyDown={searchOnEnterPressed}/>
                 <div onClick={() => props.search(search)}><i class="fa fa-search searchButton"></i></div>
             </div>
         </div>
