@@ -117,3 +117,9 @@
 a:link {
     text-decoration: none;
 }
+
+.noResults {
+    position: relative;
+    margin: 0 auto;
+    width: 70%;
+}

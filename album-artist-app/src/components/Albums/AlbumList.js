@@ -111,8 +111,11 @@ function AlbumList(props) {
         for (let i = 0; i < artistsFilter.length; i++) {
             getFilteredAlbums(parseInt(artistsFilter[i].id));
         }
-        console.log("searchData albumDetail = ", albumDetail);
         displaySearchedAlbums(albumsFilter);
+        console.log("searchData albumDetail = ", albumDetail);
+        if (albumDetail.length===0) {
+            albumDetail = <div className="noResults">No results found</div>
+        }
 
         props.changeTitle("Search results");
     }
