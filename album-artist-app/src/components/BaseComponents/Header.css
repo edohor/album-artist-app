@@ -55,3 +55,6 @@
     -ms-filter: "FlipH";
     opacity: 0.4;
 }
+.searchButton:hover {
+    cursor: pointer;
+}

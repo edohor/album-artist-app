@@ -3,7 +3,7 @@ import './AlbumList.css';
 import { Link } from 'react-router-dom';
 
 function AlbumDetail(props) {
-    console.log("AlbumDetail props = ", props);
+    // console.log("AlbumDetail props = ", props);
     
     let favoriteText = "MARK AS FAVORITE"
     if (props.details.favorite) {

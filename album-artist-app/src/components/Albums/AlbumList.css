@@ -81,6 +81,9 @@
     height: 30px;
     font-size: 0.7rem;
 }
+.markFavoriteButton:hover {
+    cursor: pointer;
+}
 .removeFavoriteButton {
     grid-column-start: 9;
     grid-column-end: 11;
@@ -94,7 +97,9 @@
     width: 100%;
     height: 30px;
     font-size: 0.7rem;
-
+}
+.removeFavoriteButton:hover {
+    cursor: pointer;
 }
 
 .grayText {
