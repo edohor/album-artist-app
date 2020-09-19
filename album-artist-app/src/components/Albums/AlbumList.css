@@ -67,7 +67,7 @@
     grid-column-end: 9;
     font-size: 0.875rem;
 }
-.favoriteButton {
+.markFavoriteButton {
     grid-column-start: 9;
     grid-column-end: 11;
 
@@ -80,6 +80,21 @@
     width: 100%;
     height: 30px;
     font-size: 0.7rem;
+}
+.removeFavoriteButton {
+    grid-column-start: 9;
+    grid-column-end: 11;
+
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    color: #13d6ea;
+    padding: 5px 15px;
+    margin: 25px 0;
+    width: 100%;
+    height: 30px;
+    font-size: 0.7rem;
+
 }
 
 .grayText {

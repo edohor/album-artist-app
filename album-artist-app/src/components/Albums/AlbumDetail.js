@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 function AlbumDetail(props) {
     console.log("AlbumDetail props = ", props);
     
-    let favorite = "MARK AS FAVORITE"
+    let favoriteText = "MARK AS FAVORITE"
     if (props.details.favorite) {
-        favorite = "Remove favorite";
+        favoriteText = "Remove favorite";
     }
 
     let d = new Date(props.details.releaseDate);
@@ -33,7 +33,7 @@ function AlbumDetail(props) {
             </div>
             <div className="releaseDate bold"><span className="grayText normal">Released:</span> <span classname="bold">{releaseYear}</span></div>
             <div className="price bold">{props.details.price}</div>
-            <button onClick={() => markFavorite(props.details.id)} className="favoriteButton">{favorite}</button>
+            <button onClick={() => markFavorite(props.details.id)} className={props.details.favorite ? "removeFavoriteButton" : "markFavoriteButton"}>{favoriteText}</button>
         </div>
     );
 }

@@ -4,11 +4,13 @@ import './AlbumList.css';
 
 let fetchAlbums = true;
 
-function AlbumList() {
+function AlbumList(props) {
+    console.log("AlbumList props = ", props);
     
     const [albums, setAlbums] = useState([]);
     const [artists, setArtists] = useState([]);
     const [filteredArtistId, setFilteredArtistId] = useState(null);
+    const [title, setTitle] = useState("");
 
     if (fetchAlbums) {
         fetchAlbums = false;
@@ -45,11 +47,15 @@ function AlbumList() {
         console.log("markFavorite albumInfo.favorite = ", albumInfo.favorite);
         let favorite = albumInfo.favorite;
         console.log("markFavorite !favorite = ", !favorite);
+        albumInfo.favorite = !favorite;
+        console.log("markFavorite albumInfo after update = ", albumInfo);
         
+        // PUT and POST methods not updating data correctly
         fetch('http://localhost:3004/albums/' + albumInfo.id, 
-        {method: "PATCH",
+        {method: "PUT",
         body: JSON.stringify(
             {
+                ...albumInfo,
                 favorite: !favorite
             }
             )})
@@ -75,7 +81,9 @@ function AlbumList() {
                     if (artists[j].id===artistId) {
                         artistName = artists[j].title;
                     }
-                }      
+                }
+                props.changeTitle(artistName);
+                
                 artistIdFiltered = artistId;
                 albumDetail.push(<AlbumDetail 
                                     details={albums[i]} 
@@ -86,7 +94,7 @@ function AlbumList() {
         }
     }
     
-    // console.log("[getAllAlbums] albums = ", albums);
+    console.log("[getAllAlbums] albums = ", albums);
     // console.log("[getAllAlbums] artists = ", artists);
 
     if (window.location.pathname!=="/") {
@@ -100,6 +108,7 @@ function AlbumList() {
         console.log("render filtered by filteredArtistId");
         getFilteredAlbums(filteredArtistId);
     } else {
+        props.changeTitle("Album list");
         console.log("render all");
         if (albums.length > 0 && artists.length > 0) {
             let artistId = null;

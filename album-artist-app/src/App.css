@@ -5,6 +5,12 @@
   background-color: #f9f9f9;
   font-family: WorkSans, sans-serif;
   color: #363636;
+  min-height: 100%;
+}
+
+html, body {
+  min-height: 100%;
+  background-color: #f9f9f9;
 }
 
 .App-header {
