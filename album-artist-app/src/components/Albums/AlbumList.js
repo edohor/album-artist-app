@@ -5,12 +5,12 @@ import './AlbumList.css';
 let fetchAlbums = true;
 
 function AlbumList(props) {
-    // console.log("AlbumList props = ", props);
+    console.log("AlbumList props = ", props);
     
     const [albums, setAlbums] = useState([]);
     const [artists, setArtists] = useState([]);
     const [filteredArtistId, setFilteredArtistId] = useState(null);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(props.search);
     let albumDetail = [];
 
     if (props.search!=="" && props.search!==search) {
@@ -21,16 +21,45 @@ function AlbumList(props) {
 
     if (fetchAlbums) {
         fetchAlbums = false;
+        fetchAllData();
+    }
 
-        fetch('http://localhost:3004/albums')
-        .then(res => res.json())
-        .then(
-            (result) => {
-                setAlbums(result);
-            },
-            (error) => {
-                console.log("repos error = ", error);
-            })  
+    function fetchAllData () {
+
+        let fetchLimit = 10;
+        if (window.location.search.includes("?limit=")) {
+            console.log("AlbumList window.location.search = ", window.location.search);
+            // console.log("AlbumList window.location.search.lastIndexOf("=") = ", window.location.search.lastIndexOf("="));
+            let limitNo = parseInt(window.location.search.slice(window.location.search.lastIndexOf("=")+1));
+            console.log("AlbumList window.location.search limitNo = ", limitNo);
+            if (Number.isInteger(limitNo) && limitNo<10) {
+                console.log("AlbumList window.location.search limitNo IS INTEGER <10");  
+                fetchLimit = limitNo;
+            }
+        }
+
+        if (fetchLimit<10) {
+            fetch('http://localhost:3004/albums?_limit='+fetchLimit)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setAlbums(result);
+                },
+                (error) => {
+                    console.log("repos error = ", error);
+                })             
+        } else {
+            fetch('http://localhost:3004/albums')
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setAlbums(result);
+                },
+                (error) => {
+                    console.log("repos error = ", error);
+                }) 
+        }
+ 
             
         fetch('http://localhost:3004/artists')
         .then(res => res.json())
@@ -40,14 +69,14 @@ function AlbumList(props) {
             },
             (error) => {
                 console.log("repos error = ", error);
-            })  
-
+            }) 
     }
 
     function filterAlbums(artistId) {
         if (search!=="") {
             setSearch("");
             props.clearSearch("")
+            props.history.push("/");
         }
         setFilteredArtistId(artistId);
     }
@@ -61,20 +90,20 @@ function AlbumList(props) {
         albumInfo.favorite = !favorite;
         console.log("markFavorite albumInfo after update = ", albumInfo);
         
-        // PUT and POST methods not updating data correctly
+        // PUT and PATCH methods not updating data correctly
         fetch('http://localhost:3004/albums/' + albumInfo.id, 
-        {method: "PUT",
+        {method: "PATCH",
         body: JSON.stringify(
             {
-                ...albumInfo,
                 favorite: !favorite
             }
-            )})
+            ),
+        headers: {"Content-type": "application/json; charset=UTF-8"}})
         .then(res => res.json())
         .then(
             (result) => {
                 console.log("repos result = ", result);
-                fetchAlbums = true;
+                fetchAllData();
             },
             (error) => {
                 console.log("repos error = ", error);
@@ -85,18 +114,18 @@ function AlbumList(props) {
         const excludeColumns = ["id", "artistId", "favorite", "imageUrl", "price", "releaseDate"];
         let albumsFilter = albums.filter(item => {
             return Object.keys(item).some(key =>
-              excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(searchInput));})
+              excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(searchInput.toLowerCase()));})
         let artistsFilter = artists.filter(item => {
             return Object.keys(item).some(key =>
-            excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(searchInput));})
-        console.log("searchData albumsFilter before = ", albumsFilter);
-        console.log("searchData artistsFilter before = ", artistsFilter);
+            excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(searchInput.toLowerCase()));})
+        // console.log("searchData albumsFilter before = ", albumsFilter);
+        // console.log("searchData artistsFilter before = ", artistsFilter);
 
         if (albumsFilter.length>0) {
             for (let i = 0; i < albumsFilter.length; i++) {
-                console.log("searchData albumsFilter[i] = ", albumsFilter[i]);
+                // console.log("searchData albumsFilter[i] = ", albumsFilter[i]);
                 for (let j = 0; j < artistsFilter.length; j++) {
-                    console.log("searchData artistsFilter[j] = ", artistsFilter[j]);
+                    // console.log("searchData artistsFilter[j] = ", artistsFilter[j]);
                     if (albumsFilter[i].artistId===artistsFilter[j].id) {
                         albumsFilter.splice(i, 1);
                         break;
@@ -105,14 +134,14 @@ function AlbumList(props) {
             }            
         }
 
-        console.log("searchData albumsFilter after = ", albumsFilter);
-        console.log("searchData artistsFilter after = ", artistsFilter);
+        // console.log("searchData albumsFilter after = ", albumsFilter);
+        // console.log("searchData artistsFilter after = ", artistsFilter);
 
         for (let i = 0; i < artistsFilter.length; i++) {
             getFilteredAlbums(parseInt(artistsFilter[i].id));
         }
         displaySearchedAlbums(albumsFilter);
-        console.log("searchData albumDetail = ", albumDetail);
+        // console.log("searchData albumDetail = ", albumDetail);
         if (albumDetail.length===0) {
             albumDetail = <div className="noResults">No results found</div>
         }
@@ -163,11 +192,17 @@ function AlbumList(props) {
         }
     }
     
-    console.log("[getAllAlbums] albums = ", albums);
-    console.log("[getAllAlbums] search = ", search);
+    // console.log("[getAllAlbums] albums = ", albums);
+    // console.log("[getAllAlbums] search = ", search);
     // console.log("[getAllAlbums] artists = ", artists);
+    console.log("[getAllAlbums] window.location = ", window.location);
+    console.log("[getAllAlbums] window.location.search = ", window.location.search);
+    console.log("[getAllAlbums] /?search= = ", "/?search=" + props.search);
+    console.log("[getAllAlbums] search = ", search);
+    console.log("[getAllAlbums] props = ", props);
 
     if (search!=="") {
+        console.log("SEARCH = ", search);
         searchData(search);
     } else {
         if (window.location.pathname!=="/") {

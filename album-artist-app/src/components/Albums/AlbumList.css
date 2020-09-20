@@ -97,6 +97,7 @@
     width: 100%;
     height: 30px;
     font-size: 0.7rem;
+    text-decoration: underline;
 }
 .removeFavoriteButton:hover {
     cursor: pointer;

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory  } from 'react-router-dom';
 
 function Header(props) {
     console.log("Header props = ", props);
+    // let history = useHistory();
     
     const [search, setSearch] = useState("");
     console.log("Header search = ", search);
@@ -17,13 +18,25 @@ function Header(props) {
         }
     }
 
+    const searchContent = () => {
+        props.search(search)
+        // history.push("/?search=" + search);
+    }
+
     return (
         <div className="Header">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="headerContent">
-                <Link exact to={"/"} className="Title" onClick={() => setSearch("")}>{props.title}</Link>
-                <input type="search" placeholder="Search" className="searchBar" onChange={event => setSearch(event.target.value)} onKeyDown={searchOnEnterPressed} value={search}/>
-                <div onClick={() => props.search(search)}><i class="fa fa-search searchButton"></i></div>
+                <Link exact to={"/"} 
+                    className="Title" 
+                    onClick={() => setSearch("")}>{props.title}</Link>
+                <input type="search" 
+                    placeholder="Search" 
+                    className="searchBar" 
+                    onChange={event => setSearch(event.target.value)} 
+                    onKeyDown={searchOnEnterPressed} 
+                    value={search}/>
+                <div onClick={searchContent}><i class="fa fa-search searchButton"></i></div>
             </div>
         </div>
     );

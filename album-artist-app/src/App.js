@@ -10,24 +10,24 @@ function App() {
   const [search, setSearch] = useState("");
   console.log("App search = ", search);
 
+  let content = (({match, history}) =>
+    <AlbumList 
+                match={match} 
+                history={history} 
+                changeTitle={setTitle} 
+                search={search}
+                clearSearch={setSearch} />
+  )
+
   return (
     <div className="App">
       <Header title={title} search={setSearch}/>
+      
       <Switch>
-        <Route exact path={"/artist/:artistId"} render={({match, history}) => 
-            <AlbumList 
-                match={match} 
-                history={history} 
-                changeTitle={setTitle} 
-                search={search}
-                clearSearch={setSearch}/>} />
-        <Route exact path={"/"} render={({match, history}) => 
-            <AlbumList 
-                match={match} 
-                history={history} 
-                changeTitle={setTitle} 
-                search={search}
-                clearSearch={setSearch}/>}/>
+        <Route exact path={"/artist/:artistId"} render={content} />
+        <Route exact path={"/?limit=:limitNo"} render={content} />
+        <Route exact path={"/?search=:string"} render={content} />
+        <Route exact path={"/"} render={content}/>
       </Switch>
     </div>
   );
