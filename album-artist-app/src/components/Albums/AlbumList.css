@@ -30,6 +30,7 @@
     height: 80%;
     margin: 10px 0 10px 10px;
     float: left;
+    width: 100%;
 }
 
 .basicInfo {
@@ -38,6 +39,7 @@
     /* display: inline-block; */
     margin: 20px 0;
     height: 70%;
+    width: 90%;
     float: left;
     grid-column-start: 2;
     grid-column-end: 6;
@@ -123,4 +125,22 @@ a:link {
     position: relative;
     margin: 0 auto;
     width: 70%;
+}
+
+@media only screen and (max-width: 1200px){
+    .releaseDate{
+        display: none;
+        width: 0px;
+    }
+    .basicInfo {
+        width: 180%;
+    }
+    .markFavoriteButton {
+        height: 60px;
+        margin: 15px 0;
+        padding: 5px 0px;
+    }
+    .title {
+        width: 100%;
+    }
 }
