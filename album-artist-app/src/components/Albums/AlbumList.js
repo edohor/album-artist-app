@@ -216,25 +216,35 @@ function AlbumList(props) {
             console.log("render filtered by filteredArtistId");
             getFilteredAlbums(filteredArtistId);
         } else {
-            props.changeTitle("Album list");
-            console.log("render all");
-            if (albums.length > 0 && artists.length > 0) {
-                let artistId = null;
-                let artistName = "";
-                for (let i = 0; i < albums.length; i++) {
-                    for (let j = 0; j < artists.length; j++) {
-                        if (albums[i].artistId===artists[j].id) {
-                            artistName = artists[j].title;
-                            artistId = artists[j].id;
+            
+
+            if (window.location.search.includes("?q=")) {
+                let searchParam = window.location.search.slice(window.location.search.lastIndexOf("=")+1);    
+                console.log("AlbumList window.location.search searchParam = ", searchParam);    
+                searchData(searchParam);    
+            } else {
+                if (window.location.search!=="") {
+                    props.history.push("/");
+                }
+                props.changeTitle("Album list");
+                console.log("render all");
+                if (albums.length > 0 && artists.length > 0) {
+                    let artistName = "";
+                    for (let i = 0; i < albums.length; i++) {
+                        for (let j = 0; j < artists.length; j++) {
+                            if (albums[i].artistId===artists[j].id) {
+                                artistName = artists[j].title;
+                            }
                         }
+                        albumDetail.push(<AlbumDetail 
+                                            details={albums[i]} 
+                                            artist={artistName} 
+                                            filterAlbums={filterAlbums} 
+                                            markFavorite={markFavorite}/>);
                     }
-                    albumDetail.push(<AlbumDetail 
-                                        details={albums[i]} 
-                                        artist={artistName} 
-                                        filterAlbums={filterAlbums} 
-                                        markFavorite={markFavorite}/>);
                 }
             }
+
         }
     }
 
