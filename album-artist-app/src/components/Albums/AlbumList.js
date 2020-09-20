@@ -13,6 +13,7 @@ function AlbumList(props) {
     const [filteredArtistId, setFilteredArtistId] = useState(null);
     const [search, setSearch] = useState(props.search);
     let albumDetail = [];
+    let fetchLimit = 10;
 
     if (props.search!=="" && props.search!==search) {
         setSearch(props.search);
@@ -22,23 +23,11 @@ function AlbumList(props) {
 
     if (fetchAlbums) {
         fetchAlbums = false;
-        fetchAllData();
+        checkLimit();
     }
 
     function fetchAllData () {
 
-        let fetchLimit = 10;
-        if (window.location.search.includes("?limit=")) {
-            console.log("AlbumList window.location.search = ", window.location.search);
-            // console.log("AlbumList window.location.search.lastIndexOf("=") = ", window.location.search.lastIndexOf("="));
-            let limitNo = parseInt(window.location.search.slice(window.location.search.lastIndexOf("=")+1));
-            console.log("AlbumList window.location.search limitNo = ", limitNo);
-            if (Number.isInteger(limitNo) && limitNo<10) {
-                console.log("AlbumList window.location.search limitNo IS INTEGER <10");  
-                fetchLimit = limitNo;
-                searchLimit = true;
-            }
-        }
         console.log("AlbumList fetchAllData searchLimit = ", searchLimit);  
 
         if (searchLimit) {
@@ -73,6 +62,24 @@ function AlbumList(props) {
             (error) => {
                 console.log("repos error = ", error);
             }) 
+    }
+
+    function checkLimit() {
+        if (window.location.search.includes("?limit=")) {
+            console.log("AlbumList window.location.search = ", window.location.search);
+            // console.log("AlbumList window.location.search.lastIndexOf("=") = ", window.location.search.lastIndexOf("="));
+            fetchLimit = parseInt(window.location.search.slice(window.location.search.lastIndexOf("=")+1));
+            console.log("AlbumList window.location.search limitNo = ", fetchLimit);
+            if (Number.isInteger(fetchLimit) && fetchLimit<10) {
+                console.log("AlbumList window.location.search limit No IS INTEGER <10");  
+                fetchLimit = fetchLimit;
+                searchLimit = true;
+            } else {
+                fetchLimit = 10;
+                searchLimit = false;
+            }
+        }
+        fetchAllData();
     }
 
     function filterAlbums(artistId) {
@@ -231,6 +238,8 @@ function AlbumList(props) {
                     console.log("AlbumList SEARCH ALL");    
                     searchLimit = false;
                     fetchAllData();
+                } else if (window.location.search.includes("?limit=") && !searchLimit) {
+                    checkLimit();
                 }
                 props.changeTitle("Album list");
                 console.log("render all");
