@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AlbumDetail from './AlbumDetail';
 import './AlbumList.css';
 
 let fetchAlbums = true;
+let searchLimit = false;
 
 function AlbumList(props) {
     console.log("AlbumList props = ", props);
@@ -35,10 +36,12 @@ function AlbumList(props) {
             if (Number.isInteger(limitNo) && limitNo<10) {
                 console.log("AlbumList window.location.search limitNo IS INTEGER <10");  
                 fetchLimit = limitNo;
+                searchLimit = true;
             }
         }
+        console.log("AlbumList fetchAllData searchLimit = ", searchLimit);  
 
-        if (fetchLimit<10) {
+        if (searchLimit) {
             fetch('http://localhost:3004/albums?_limit='+fetchLimit)
             .then(res => res.json())
             .then(
@@ -223,8 +226,11 @@ function AlbumList(props) {
                 console.log("AlbumList window.location.search searchParam = ", searchParam);    
                 searchData(searchParam);    
             } else {
-                if (window.location.search!=="") {
-                    props.history.push("/");
+                console.log("AlbumList searchLimit = ", searchLimit);    
+                if (window.location.search==="" && searchLimit) {
+                    console.log("AlbumList SEARCH ALL");    
+                    searchLimit = false;
+                    fetchAllData();
                 }
                 props.changeTitle("Album list");
                 console.log("render all");
