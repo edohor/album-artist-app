@@ -1,5 +1,9 @@
 # album-artist-app
-Displaying album list and artist details
+Displaying album list and filtering albums by artists
+
+Run the app by running "npm start" in the project directory.
+
+----------
 
 App is using custom JSON Server to collect data on albums and artists which is running locally on port 3004.
 
