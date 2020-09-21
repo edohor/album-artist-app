@@ -156,7 +156,7 @@ function AlbumList(props) {
             albumDetail = <div className="noResults">No results found</div>
         }
 
-        props.changeTitle("Album list > Search results");
+        props.changeTitle("Search results");
     }
 
     function displaySearchedAlbums(searchedAlbums){

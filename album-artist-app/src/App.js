@@ -26,7 +26,6 @@ function App() {
       <Switch>
         <Route exact path={"/artist/:artistId"} render={content} />
         <Route exact path={"/?limit=:limitNo"} render={content} />
-        <Route exact path={"/?search=:string"} render={content} />
         <Route exact path={"/"} render={content}/>
       </Switch>
     </div>
