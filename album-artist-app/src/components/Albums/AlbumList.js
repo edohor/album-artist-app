@@ -6,7 +6,6 @@ let fetchAlbums = true;
 let searchLimit = false;
 
 function AlbumList(props) {
-    console.log("AlbumList props = ", props);
     
     const [albums, setAlbums] = useState([]);
     const [artists, setArtists] = useState([]);
@@ -27,8 +26,6 @@ function AlbumList(props) {
     }
 
     function fetchAllData () {
-
-        console.log("AlbumList fetchAllData searchLimit = ", searchLimit);  
 
         if (searchLimit) {
             fetch('http://localhost:3004/albums?_limit='+fetchLimit)
@@ -66,12 +63,8 @@ function AlbumList(props) {
 
     function checkLimit() {
         if (window.location.search.includes("?limit=")) {
-            console.log("AlbumList window.location.search = ", window.location.search);
-            // console.log("AlbumList window.location.search.lastIndexOf("=") = ", window.location.search.lastIndexOf("="));
             fetchLimit = parseInt(window.location.search.slice(window.location.search.lastIndexOf("=")+1));
-            console.log("AlbumList window.location.search limitNo = ", fetchLimit);
             if (Number.isInteger(fetchLimit) && fetchLimit<10) {
-                console.log("AlbumList window.location.search limit No IS INTEGER <10");  
                 fetchLimit = fetchLimit;
                 searchLimit = true;
             } else {
@@ -92,13 +85,8 @@ function AlbumList(props) {
     }
 
     function markFavorite(albumInfo) {
-        console.log("markFavorite albumInfo = ", albumInfo);
-        console.log("markFavorite albumInfo.id = ", albumInfo.id);
-        console.log("markFavorite albumInfo.favorite = ", albumInfo.favorite);
         let favorite = albumInfo.favorite;
-        console.log("markFavorite !favorite = ", !favorite);
         albumInfo.favorite = !favorite;
-        console.log("markFavorite albumInfo after update = ", albumInfo);
         
         // PUT and PATCH methods not updating data correctly
         fetch('http://localhost:3004/albums/' + albumInfo.id, 
@@ -112,7 +100,6 @@ function AlbumList(props) {
         .then(res => res.json())
         .then(
             (result) => {
-                console.log("repos result = ", result);
                 fetchAllData();
             },
             (error) => {
@@ -128,14 +115,10 @@ function AlbumList(props) {
         let artistsFilter = artists.filter(item => {
             return Object.keys(item).some(key =>
             excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(searchInput.toLowerCase()));})
-        // console.log("searchData albumsFilter before = ", albumsFilter);
-        // console.log("searchData artistsFilter before = ", artistsFilter);
 
         if (albumsFilter.length>0) {
             for (let i = 0; i < albumsFilter.length; i++) {
-                // console.log("searchData albumsFilter[i] = ", albumsFilter[i]);
                 for (let j = 0; j < artistsFilter.length; j++) {
-                    // console.log("searchData artistsFilter[j] = ", artistsFilter[j]);
                     if (albumsFilter[i].artistId===artistsFilter[j].id) {
                         albumsFilter.splice(i, 1);
                         break;
@@ -144,14 +127,10 @@ function AlbumList(props) {
             }            
         }
 
-        // console.log("searchData albumsFilter after = ", albumsFilter);
-        // console.log("searchData artistsFilter after = ", artistsFilter);
-
         for (let i = 0; i < artistsFilter.length; i++) {
             getFilteredAlbums(parseInt(artistsFilter[i].id));
         }
         displaySearchedAlbums(albumsFilter);
-        // console.log("searchData albumDetail = ", albumDetail);
         if (albumDetail.length===0) {
             albumDetail = <div className="noResults">No results found</div>
         }
@@ -201,48 +180,32 @@ function AlbumList(props) {
             }
         }
     }
-    
-    // console.log("[getAllAlbums] albums = ", albums);
-    // console.log("[getAllAlbums] search = ", search);
-    // console.log("[getAllAlbums] artists = ", artists);
-    console.log("[getAllAlbums] window.location = ", window.location);
-    console.log("[getAllAlbums] window.location.search = ", window.location.search);
-    console.log("[getAllAlbums] /?search= = ", "/?search=" + props.search);
-    console.log("[getAllAlbums] search = ", search);
-    console.log("[getAllAlbums] props = ", props);
 
     if (search!=="") {
-        console.log("SEARCH = ", search);
         searchData(search);
     } else {
         if (window.location.pathname!=="/") {
-            console.log("render filtered by pathname");
             let idFromUrl = window.location.pathname.split('/');  
             if (filteredArtistId===null) {          
                 setFilteredArtistId(parseInt(idFromUrl[2]));
             }
             getFilteredAlbums(parseInt(idFromUrl[2]));
         } else if(filteredArtistId!==null && window.location.pathname!=="/") {
-            console.log("render filtered by filteredArtistId");
             getFilteredAlbums(filteredArtistId);
         } else {
             
 
             if (window.location.search.includes("?q=")) {
-                let searchParam = window.location.search.slice(window.location.search.lastIndexOf("=")+1);    
-                console.log("AlbumList window.location.search searchParam = ", searchParam);    
+                let searchParam = window.location.search.slice(window.location.search.lastIndexOf("=")+1);  
                 searchData(searchParam);    
             } else {
-                console.log("AlbumList searchLimit = ", searchLimit);    
                 if (window.location.search==="" && searchLimit) {
-                    console.log("AlbumList SEARCH ALL");    
                     searchLimit = false;
                     fetchAllData();
                 } else if (window.location.search.includes("?limit=") && !searchLimit) {
                     checkLimit();
                 }
                 props.changeTitle("Album list");
-                console.log("render all");
                 if (albums.length > 0 && artists.length > 0) {
                     let artistName = "";
                     for (let i = 0; i < albums.length; i++) {

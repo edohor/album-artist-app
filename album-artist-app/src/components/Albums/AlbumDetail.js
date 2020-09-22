@@ -3,7 +3,6 @@ import './AlbumList.css';
 import { Link } from 'react-router-dom';
 
 function AlbumDetail(props) {
-    // console.log("AlbumDetail props = ", props);
     
     let favoriteText = "MARK AS FAVORITE"
     if (props.details.favorite) {
@@ -14,7 +13,6 @@ function AlbumDetail(props) {
     let releaseYear = d.getFullYear();
 
     function markFavorite(id) {
-        console.log("Button clicked", id);
         props.markFavorite(props.details);
     }
 

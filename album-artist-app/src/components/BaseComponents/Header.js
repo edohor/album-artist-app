@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import './Header.css';
-import { Link, useHistory  } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 
 function Header(props) {
-    console.log("Header props = ", props);
-    // let history = useHistory();
     
     const [search, setSearch] = useState("");
-    console.log("Header search = ", search);
     if (search==="") {
         props.search(search);
     }
@@ -20,7 +17,6 @@ function Header(props) {
 
     const searchContent = () => {
         props.search(search)
-        // history.push("/?search=" + search);
     }
 
     return (
